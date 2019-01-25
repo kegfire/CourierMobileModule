@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Courier.View.SettingsPage"           
+             xmlns:customUiElements="clr-namespace:Courier.CustomUIElements"
+             xmlns:viewMoodel="clr-namespace:Courier.ViewMoodel"
+             Title="Настройки">
+    <ContentPage.BindingContext>
+        <viewMoodel:SettingsPageViewModel/>
+    </ContentPage.BindingContext>
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Command="{Binding OpenMenuCommand}" Icon="Menu.png" ></ToolbarItem>
+	</ContentPage.ToolbarItems>
+	<ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ButtonStyle" TargetType="Button">
+	            <Setter Property="HeightRequest" Value="30"/>
+	            <Setter Property="Margin" Value="15,10,15,10"/>
+	            <Setter Property="Padding" Value="0,5,0,5"></Setter>
+	            <Setter Property="TextColor" Value="White"></Setter>
+	            <Setter Property="WidthRequest" Value="350"></Setter>
+	            <Setter Property="HorizontalOptions" Value="CenterAndExpand"></Setter>
+	            <Setter Property="BackgroundColor" Value="#38ac15"></Setter>
+			</Style>
+	        <Style x:Key="StackLayoutLabel" TargetType="Label">
+		        <Setter Property="VerticalTextAlignment" Value="Center"></Setter>
+		        <Setter Property="TextColor" Value="Black"></Setter>
+				<Setter Property="HorizontalOptions" Value="StartAndExpand"></Setter>
+				<Setter Property="Margin" Value="15,0,0,0"></Setter>
+	        </Style>
+	        <Style x:Key="SmallLabel" TargetType="Label">
+		        <Setter Property="VerticalTextAlignment" Value="Center"></Setter>
+		        <!--<Setter Property="NamedFontSize" Value="Small"></Setter>-->
+		        <Setter Property="TextColor" Value="Black"></Setter>
+	        </Style>
+		</ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+		<StackLayout>
+			<customUiElements:ListView ItemsSource="{Binding Companies}" SelectedItem="{Binding SelectedCompany}" ItemClickCommand="{Binding OpenCompanySettings}" VerticalOptions="FillAndExpand" HasUnevenRows="True">
+		        <ListView.ItemTemplate>
+			        <DataTemplate>
+						<ViewCell>
+							<StackLayout Orientation="Horizontal">
+								<StackLayout Orientation="Vertical">
+									<Label VerticalOptions="Center" Text="{Binding CompanyName}" Style="{StaticResource StackLayoutLabel}" ></Label>
+									<Label VerticalOptions="Center" Text="{Binding UserLogin}" Style="{StaticResource StackLayoutLabel}" FontSize="Small"></Label>
+								</StackLayout>
+								<Image VerticalOptions="Center" HorizontalOptions="EndAndExpand" Source="Forward_gray.png" Margin="0,15,15,15"></Image>
+							</StackLayout>
+						</ViewCell>
+					</DataTemplate>
+		        </ListView.ItemTemplate>
+	        </customUiElements:ListView>
+			<StackLayout BackgroundColor="White" Orientation="Vertical"  VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+				<Button Text="Добавить организацию" Style="{StaticResource ButtonStyle}" Command="{Binding OpenCompanySettings}"  HorizontalOptions="CenterAndExpand"></Button>
+			</StackLayout>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

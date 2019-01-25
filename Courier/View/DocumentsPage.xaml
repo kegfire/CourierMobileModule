@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewMoodel="clr-namespace:Courier.ViewMoodel;assembly=Courier"
+             xmlns:customUiElements="clr-namespace:Courier.CustomUIElements;assembly=Courier"
+             xmlns:converter="clr-namespace:Courier.Converter;assembly=Courier"
+             x:Class="Courier.View.DocumentsPage"
+             Title="{Binding Title}">
+	<ContentPage.BindingContext>
+		<viewMoodel:DocumentsViewModel></viewMoodel:DocumentsViewModel>
+	</ContentPage.BindingContext>
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Command="{Binding OpenMenuCommand}" Icon="Menu.png" ></ToolbarItem>
+	</ContentPage.ToolbarItems>
+	<x:Arguments>
+		<ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>
+	</x:Arguments>
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style x:Key="ButtonStyle" TargetType="Button">
+				<Setter Property="BackgroundColor" Value="White"/>
+				<Setter Property="VerticalOptions" Value="Center"></Setter>
+				<Setter Property="WidthRequest" Value="30"></Setter>
+				<Setter Property="HeightRequest" Value="30"></Setter>
+				<Setter Property="CornerRadius" Value="5"></Setter>
+			</Style>
+			<Style x:Key="StackLayoutLabel" TargetType="customUiElements:CustomLabel">
+				<Setter Property="VerticalTextAlignment" Value="Center"></Setter>
+				<Setter Property="TextColor" Value="Black"></Setter>
+				<Setter Property="NamedFontSize" Value="Medium"></Setter>
+				<Setter Property="FontSizeFactor" Value="0.75"></Setter>
+			</Style>
+			<Style x:Key="SmallLabel" TargetType="customUiElements:CustomLabel">
+				<Setter Property="VerticalTextAlignment" Value="Center"></Setter>
+				<Setter Property="NamedFontSize" Value="Small"></Setter>
+				<Setter Property="TextColor" Value="Black"></Setter>
+			</Style>
+			<Style x:Key="Frame" TargetType="Frame">
+				<Setter Property="BorderColor" Value="#ecedf1"></Setter>
+				<Setter Property="HasShadow" Value="False"></Setter>
+				<Setter Property="Padding" Value="5"></Setter>
+				<Setter Property="Margin" Value="15,0,15,15"></Setter>
+			</Style>
+			<converter:DateTimeToLocalDateConverter x:Key="DateConverter" />
+		</ResourceDictionary>
+	</ContentPage.Resources>
+	<ContentPage.Content>
+		<StackLayout Spacing="0">
+			<customUiElements:ListView SeparatorColor="Gray" VerticalOptions="FillAndExpand" HasUnevenRows="True" BackgroundColor="White" 
+			                           ItemsSource="{Binding Documents}" 
+			                           ItemClickCommand="{Binding OpenDocumentCommand}" 
+			                           IsPullToRefreshEnabled="True" RefreshCommand="{Binding RefreshCommand}"
+			                           IsRefreshing="{Binding IsRefreshing}">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<StackLayout Orientation="Horizontal">
+								<StackLayout HorizontalOptions="FillAndExpand" >
+									<StackLayout Orientation="Horizontal" Margin="15,0,15,0">
+										
+										<customUiElements:CustomLabel Style="{StaticResource StackLayoutLabel}" FontAttributes="Bold" Text="{Binding Data.Number}" TextColor="#26619a" HorizontalOptions="Start"></customUiElements:CustomLabel>
+										<customUiElements:CustomLabel Style="{StaticResource StackLayoutLabel}" FontAttributes="Bold" Text="от" HorizontalOptions="Start"></customUiElements:CustomLabel>
+										<customUiElements:CustomLabel Style="{StaticResource StackLayoutLabel}" FontAttributes="Bold" Text="{Binding Data.Date, Converter={StaticResource DateConverter}}"  HorizontalOptions="Start"></customUiElements:CustomLabel>
+										<Switch IsToggled="{Binding Selected, Mode=TwoWay}" HorizontalOptions="EndAndExpand" OnColor="#26619a"></Switch>
+									</StackLayout>
+									<BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Fill" HeightRequest="1" Color="#ecedf1"/>
+									<customUiElements:CustomLabel Margin="15,0,15,0" Style="{StaticResource StackLayoutLabel}"  Text="{Binding Data.TypeName}" TextColor="#26619a"></customUiElements:CustomLabel>
+									
+									<Grid Margin="15,0,15,0">
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="Auto" ></ColumnDefinition>
+											<ColumnDefinition Width="Auto"></ColumnDefinition>
+											<ColumnDefinition Width="Auto"></ColumnDefinition>
+											<ColumnDefinition Width="Auto"></ColumnDefinition>
+											<ColumnDefinition Width="Auto"></ColumnDefinition>
+											<ColumnDefinition ></ColumnDefinition>
+										</Grid.ColumnDefinitions>
+										<Grid.RowDefinitions>
+											<RowDefinition Height="Auto"></RowDefinition>
+											<RowDefinition Height="Auto"></RowDefinition>
+											<RowDefinition Height="Auto"></RowDefinition>
+										</Grid.RowDefinitions>
+										<Image Grid.Row="0" Grid.Column="0" Source="Sender.png"></Image>
+										<customUiElements:CustomLabel  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Style="{StaticResource SmallLabel}" Text="{Binding Data.SenderName}"></customUiElements:CustomLabel>
+										<customUiElements:CustomLabel  Grid.Row="1" Grid.Column="1" Style="{StaticResource SmallLabel}" Text="Сумма"></customUiElements:CustomLabel>
+										<customUiElements:CustomLabel  Grid.Row="1" Grid.Column="2" Style="{StaticResource SmallLabel}" Text="{Binding Data.TotalSum}"></customUiElements:CustomLabel>
+										<customUiElements:CustomLabel  Grid.Row="1" Grid.Column="3" Style="{StaticResource SmallLabel}" Text="В том числе НДС"></customUiElements:CustomLabel>
+										<customUiElements:CustomLabel  Grid.Row="1" Grid.Column="4" Style="{StaticResource SmallLabel}"  Text="{Binding Data.VatSum}"></customUiElements:CustomLabel>
+										<customUiElements:CustomLabel  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" Style="{StaticResource SmallLabel}" Text="{Binding Data.StatusName}" Margin="0,0,0,10"></customUiElements:CustomLabel>
+									</Grid>
+								</StackLayout>
+							</StackLayout>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</customUiElements:ListView>
+			<StackLayout IsVisible="{Binding RejectCommentVisibility}" Margin="15,0,15,15" >
+				<Label Text="Введите причину отклонения" FontAttributes="Bold" TextColor="Black" Margin="15,15,0,0"></Label>
+				<Entry Text="{Binding RejectReason}" Margin="0,15,0,0" Placeholder="Ваш комментарий ..."></Entry>
+				<StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+					<Button Text="Отклонить" TextColor="White" BackgroundColor="#e52929" Command="{Binding RejectAllCommand}" Margin="0,15,5,15"
+					        HeightRequest="30" Padding="10,0,10,0" CornerRadius="5"></Button>
+					<Button Text="Закрыть" TextColor="Black" BackgroundColor="White" BorderColor="Black" BorderWidth="2" CornerRadius="5" Margin="0,15,0,15" Command="{Binding CancelRejectCommand}"
+					        HeightRequest="30" Padding="10,0,10,0" ></Button>
+				</StackLayout>
+			</StackLayout>
+			<StackLayout IsVisible="{Binding FilterEnabled}">
+				<BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Fill" HeightRequest="1" Color="#ecedf1" Margin="0,0,0,15"/>
+				<Frame Style="{StaticResource Frame}">
+					<StackLayout>
+						<StackLayout Orientation="Horizontal">
+							<Image Source="Search.png"></Image>
+							<Entry Text="{Binding SearchingNumber}" Placeholder="Номер документа" HorizontalOptions="FillAndExpand" ></Entry>
+						</StackLayout>
+						<StackLayout Orientation="Horizontal">
+							<Image Source="Calendar.png"></Image>
+							<customUiElements:CustomLabel Style="{StaticResource StackLayoutLabel}" Text="C"></customUiElements:CustomLabel>
+							<DatePicker Date="{Binding FromDate}" WidthRequest="120"></DatePicker>
+							<customUiElements:CustomLabel Style="{StaticResource StackLayoutLabel}" Text="ПО"></customUiElements:CustomLabel>
+							<DatePicker Date="{Binding ToDate}" WidthRequest="120"></DatePicker>
+						</StackLayout>
+					</StackLayout>
+				</Frame>
+			</StackLayout>
+			<StackLayout IsVisible="{Binding FilterPanelVisibility}">
+				<BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Fill" HeightRequest="1" Color="#ecedf1"/>
+				<StackLayout BackgroundColor="White" Orientation="Horizontal" VerticalOptions="End" HeightRequest="40" >
+					<ActivityIndicator Color="#38ac15" IsRunning="{Binding IsProcessing}" IsVisible="{Binding IsProcessing}" Margin="15,0,0,0"></ActivityIndicator>
+					<Button Text="Принять" Command="{Binding AcceptAllCommand}" Margin="15,5,0,5" IsVisible="{Binding ButtonVisibility}" 
+					        BackgroundColor="#38ac15" TextColor="White" HorizontalOptions="Start" HeightRequest="30" Padding="10,0,10,0" CornerRadius="5"></Button>
+					<Button Text="Отклонить" Command="{Binding ShowRejectPanelCommand}" Margin="15,5,0,5" IsVisible="{Binding ButtonVisibility}" 
+					        BackgroundColor="#e52929" TextColor="White" HorizontalOptions="Start" HeightRequest="30" Padding="10,0,10,0" CornerRadius="5"></Button>
+					<Button Style="{StaticResource ButtonStyle}" Command="{Binding RefreshCommand}" HorizontalOptions="EndAndExpand" Image="Refresh.png" Margin="0,0,15,0"></Button>
+					<Button Style="{StaticResource ButtonStyle}" HorizontalOptions="End" Command="{Binding ShowFilterCommand}" Image="Filtr.png" Margin="0,0,15,0"></Button>
+				</StackLayout>
+			</StackLayout>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewMoodel="clr-namespace:Courier.ViewMoodel;assembly=Courier"
+             x:Class="Courier.View.CompanyPage"
+             Title="Организация">
+	<ContentPage.BindingContext>
+		<viewMoodel:CompanyPageViewModel/>
+	</ContentPage.BindingContext>
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Command="{Binding OpenMenuCommand}" Icon="Menu.png" ></ToolbarItem>
+	</ContentPage.ToolbarItems>
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style x:Key="ButtonStyle" TargetType="Button">
+				<Setter Property="HeightRequest" Value="30"/>
+				<Setter Property="Margin" Value="15,10,15,10"/>
+				<Setter Property="Padding" Value="0,5,0,5"></Setter>
+				<Setter Property="TextColor" Value="White"></Setter>
+				<Setter Property="WidthRequest" Value="350"></Setter>
+				<Setter Property="HorizontalOptions" Value="CenterAndExpand"></Setter>
+				<Setter Property="BackgroundColor" Value="#38ac15"></Setter>
+			</Style>
+			<Style x:Key="ActivityIndicatorStyle" TargetType="ActivityIndicator">
+				<Setter Property="HeightRequest" Value="30"/>
+				<Setter Property="Margin" Value="15,10,15,10"/>
+				<Setter Property="WidthRequest" Value="350"></Setter>
+				<Setter Property="HorizontalOptions" Value="CenterAndExpand"></Setter>
+			</Style>
+			<Style x:Key="Entry" TargetType="Entry">
+				<Setter Property="FontSize" Value="Small"></Setter>
+				<Setter Property="WidthRequest" Value="200"></Setter>
+				<Setter Property="HorizontalOptions" Value="EndAndExpand"></Setter>
+			</Style>
+			<Style x:Key="Label" TargetType="Entry">
+				<Setter Property="VerticalOptions" Value="Center"></Setter>
+				<Setter Property="HorizontalOptions" Value="Center"></Setter>
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+	<ContentPage.Content>
+		<StackLayout HorizontalOptions="Center"  Margin="15,15,15,0">
+			<Label Text="{Binding CompanyName}" Style="{StaticResource Label}" FontAttributes="Bold" TextColor="Black"></Label>
+			<StackLayout IsVisible="{Binding ShowInnKpp}">
+				<StackLayout Orientation="Horizontal">
+					<Label Text="ИНН"  Style="{StaticResource Label}" TextColor="#26619a"></Label>
+					<Label Text="{Binding Company.Inn}" Style="{StaticResource Label}" TextColor="#26619a" HorizontalOptions ="EndAndExpand"></Label>
+				</StackLayout>
+				<BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Fill" HeightRequest="1" Color="#ecedf1"/>
+				<StackLayout Orientation="Horizontal">
+					<Label Text="КПП" Style="{StaticResource Label}" TextColor="#26619a"></Label>
+					<Label Text="{Binding Company.Kpp}" Style="{StaticResource Label}" TextColor="#26619a" HorizontalOptions ="EndAndExpand"></Label>
+				</StackLayout>
+				<BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Fill" HeightRequest="1" Color="#ecedf1"/>
+			</StackLayout>
+			<StackLayout Orientation="Horizontal">
+				<Label Text=" Логин"  Style="{StaticResource Label}"></Label>
+				<Entry Text="{Binding Company.UserLogin}"  Style="{StaticResource Entry}" Placeholder="Введите логин"></Entry>
+			</StackLayout>
+			<BoxView HorizontalOptions="FillAndExpand" VerticalOptions="Fill" HeightRequest="1" Color="#ecedf1"/>
+			<StackLayout Orientation="Horizontal">
+				<Label Text=" Пароль" Style="{StaticResource Label}"></Label>
+				<Entry Text="{Binding Company.UserPassword}" Style="{StaticResource Entry}" IsPassword="true" Placeholder="Введите пароль"></Entry>
+			</StackLayout>
+			<Button Text="Авторизоваться" Style="{StaticResource ButtonStyle}" Command="{Binding LogonCommand}" IsVisible="{Binding ButtonVisibility}"></Button>
+			<ActivityIndicator IsVisible="{Binding IsProcessing}" IsRunning="{Binding IsProcessing}" Style="{StaticResource ActivityIndicatorStyle}"></ActivityIndicator>
+			<Button Text="Удалить" Style="{StaticResource ButtonStyle}" Command="{Binding DeleteCommand}" BackgroundColor="#e52929" IsVisible="{Binding DeleteButtonVisibility}"></Button>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

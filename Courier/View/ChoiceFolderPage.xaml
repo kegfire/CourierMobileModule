@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:customUiElements="clr-namespace:Courier.CustomUIElements"
+             xmlns:viewMoodel="clr-namespace:Courier.ViewMoodel"
+             x:Class="Courier.View.ChoiceFolderPage"
+             Title="Выбор папки">
+    <ContentPage.BindingContext>
+        <viewMoodel:ChoiceFolderViewModel/>
+    </ContentPage.BindingContext>
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<Style x:Key="ButtonStyle" TargetType="Button">
+				<Setter Property="HeightRequest" Value="30"/>
+				<Setter Property="Margin" Value="15,10,15,10"/>
+				<Setter Property="Padding" Value="0,5,0,5"></Setter>
+				<Setter Property="TextColor" Value="White"></Setter>
+				<Setter Property="WidthRequest" Value="350"></Setter>
+				<Setter Property="HorizontalOptions" Value="CenterAndExpand"></Setter>
+				<Setter Property="BackgroundColor" Value="#38ac15"></Setter>
+			</Style>
+		</ResourceDictionary>
+	</ContentPage.Resources>
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Command="{Binding OpenMenuCommand}" Icon="Menu.png" ></ToolbarItem>
+	</ContentPage.ToolbarItems>
+	<ContentPage.Content>
+		<StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand">
+			<customUiElements:ListView ItemsSource="{Binding Folders}" ItemClickCommand="{Binding OpenFolderCommand}" BackgroundColor="White" VerticalOptions="FillAndExpand">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<StackLayout Orientation="Horizontal">
+								<Label VerticalOptions="Center" HorizontalOptions="StartAndExpand" Text="{Binding Item1}" TextColor="Black" Margin="15,0,0,0"></Label>
+								<Image VerticalOptions="Center" HorizontalOptions="End" Source="Forward_gray.png" Margin="0,15,15,15"></Image>
+							</StackLayout>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</customUiElements:ListView>
+			<StackLayout BackgroundColor="White"  Orientation="Vertical"  VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+				<Button Text="Настройки" Command="{Binding OpenSettingsCommand}" Style="{StaticResource ButtonStyle}" HorizontalOptions="CenterAndExpand"></Button>
+			</StackLayout>
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>
